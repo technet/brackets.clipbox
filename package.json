@@ -2,7 +2,7 @@
     "name": "technet.clipbox",
     "title": "ClipBox (Clipboard History)",
     "description": "It's a clipboard with history, Allow you to access recently copied texts and paste them back to your editor.",
-    "homepage": "https://github.com/technet/brackets.recentprojects",
+    "homepage": "https://github.com/technet/brackets.clipbox",
     "version": "0.1.0",
     "author": "Technet <technetlk@gmail.com> (http://tutewall.com)",
     "license": "MIT",
