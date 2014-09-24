@@ -4,6 +4,7 @@ Brackets ClipBox (Clipboard History)
 Another simple extension which remembers last few copied texts and allow you to access them and paste back whenever needed. This will capture <kbd>Ctrl</kbd>+<kbd>C</kbd> keystrokes and store selected text in its own internal array. Then you can invoke the hot-key <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>V</kbd> to launch `QuickOpen` window, select and paste back.
 
 > This extension won't change how you normally copy text (i.e. <kbd>Ctrl</kbd>+<kbd>C</kbd>), but it seamlessly keeps history of copied texts for future reference.
+> Clopboard history is really important when you need to copy segments from multiple locations of and paste in another location. Normally you have to copy and paste each segment one after another. But with this extension you can keep on copying these segments and then paste them all in one go.
 
 There are some limitations, but considering 99% of common usage, these limitations won't be that significant.
 
