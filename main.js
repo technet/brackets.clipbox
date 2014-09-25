@@ -3,7 +3,7 @@
 // Author: technetlk@gmail.com (https://github.com/technet/brackets.clipbox, http://tutewall.com)
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global define, brackets, $, _ */
+/*global define, brackets, $, _, Mustache */
 define(function (require, exports, module) {
     "use strict";
     
@@ -27,7 +27,7 @@ define(function (require, exports, module) {
         lastKey             = 0;
     
     var settingsDlgTemplate = require("text!templates/settings.html");
-    var Strings             = require("strings");
+    var ExtStrings          = require("strings");
 
     // Constants
     var MAX_CLIPBOX_SIZE                = 10,                                   // Maximum number of history entries, if you think you need more just increase.
@@ -99,16 +99,16 @@ define(function (require, exports, module) {
 
     function showSettingsDialog() {
 
-        var localizedTemplate = Mustache.render(settingsDlgTemplate, Strings);
+        var localizedTemplate = Mustache.render(settingsDlgTemplate, ExtStrings);
         var settingsDlg = Dialogs.showModalDialogUsingTemplate(localizedTemplate);
     }
 
     function buildCommands() {
 
         var editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
-        CommandManager.register("Show ClipBox", CMDID_SHOWCLIPBOX, beginClipBoxSearch);
-        CommandManager.register("Clear ClipBox", CMDID_CLEARCLIPBOX, clearClipboard);
-        CommandManager.register("ClipBox Settings...", CMDID_CLIPBOXSETTINGS, showSettingsDialog);
+        CommandManager.register(ExtStrings.MNU_SHOW_CLIPBOX, CMDID_SHOWCLIPBOX, beginClipBoxSearch);
+        CommandManager.register(ExtStrings.MNU_CLEAR_CLIPBOX, CMDID_CLEARCLIPBOX, clearClipboard);
+        CommandManager.register(ExtStrings.MNU_SETTINGS, CMDID_CLIPBOXSETTINGS, showSettingsDialog);
 
         editMenu.addMenuDivider();
         
@@ -148,7 +148,7 @@ define(function (require, exports, module) {
 
     function clipEntryFormatter(item, query) {
         var trimmed = $.trim(item);
-        var shortText = trimmed.length === 0 ? "[blank]" : (trimmed.length > MAX_QUICKOPEN_ENTRY_LEN ? StringUtils.truncate(trimmed, MAX_QUICKOPEN_ENTRY_LEN) : trimmed);
+        var shortText = trimmed.length === 0 ? ExtStrings.TXT_BLANK : (trimmed.length > MAX_QUICKOPEN_ENTRY_LEN ? StringUtils.truncate(trimmed, MAX_QUICKOPEN_ENTRY_LEN) : trimmed);
         // var formattedText = QuickOpen.highlightMatch(shortText);
         return StringUtils.format("<li>{0}</li>", _.escape(shortText));
     }

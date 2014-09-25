@@ -12,5 +12,12 @@ define({
     "DLG_LBL_QKOPEN"    : "QuickOpen Shortcut",
     "DLG_PLH_QKOPEN"    : "Shortcut keys to open history box (Ctrl-Alt-V)",
     "DLG_CMD_SAVE"      : "Save",
-    "DLG_CMD_CANCEL"    : "Cancel"
+    "DLG_CMD_CANCEL"    : "Cancel",
+
+
+    "MNU_CLEAR_CLIPBOX" : "Clear ClipBox",
+    "MNU_SHOW_CLIPBOX"  : "Show ClipBox",
+    "MNU_SETTINGS"      : "ClipBox Settings...",
+
+    "TXT_BLANK"         : "[blank]"
 });
