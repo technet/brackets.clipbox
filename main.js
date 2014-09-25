@@ -27,6 +27,7 @@ define(function (require, exports, module) {
         lastKey             = 0;
     
     var settingsDlgTemplate = require("text!templates/settings.html");
+    var Strings             = require("strings");
 
     // Constants
     var MAX_CLIPBOX_SIZE                = 10,                                   // Maximum number of history entries, if you think you need more just increase.
@@ -97,7 +98,9 @@ define(function (require, exports, module) {
     }
 
     function showSettingsDialog() {
-        var settingsDlg = Dialogs.showModalDialogUsingTemplate(settingsDlgTemplate);
+
+        var localizedTemplate = Mustache.render(settingsDlgTemplate, Strings);
+        var settingsDlg = Dialogs.showModalDialogUsingTemplate(localizedTemplate);
     }
 
     function buildCommands() {
@@ -176,6 +179,7 @@ define(function (require, exports, module) {
     AppInit.appReady(function () {
         
         var currentEditor = EditorManager.getCurrentFullEditor();
+        ExtensionUtils.loadStyleSheet(module, "styles/settings.css");
 
         $(currentEditor).on('keyEvent', keyEventHandler);
         $(EditorManager).on('activeEditorChange', activeEditorChangeHandler);
