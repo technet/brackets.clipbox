@@ -15,6 +15,7 @@ define(function (require, exports, module) {
         ExtensionUtils  = brackets.getModule("utils/ExtensionUtils"),
         PanelManager    = brackets.getModule("view/PanelManager"),
         QuickOpen       = brackets.getModule("search/QuickOpen"),
+        Dialogs         = brackets.getModule("widgets/Dialogs"),
         StringUtils     = brackets.getModule("utils/StringUtils");
 
     var ctrlDown            = false,
@@ -25,12 +26,15 @@ define(function (require, exports, module) {
         quickOpenMatch      = '#',
         lastKey             = 0;
     
+    var settingsDlgTemplate = require("text!templates/settings.html");
+
     // Constants
     var MAX_CLIPBOX_SIZE                = 10,                                   // Maximum number of history entries, if you think you need more just increase.
         EXT_NAME                        = "technet.clipbox",
         QUICKOPEN_LABEL                 = "ClipBox",
         CMDID_SHOWCLIPBOX               = EXT_NAME + "-" + "show.history",      // Command Id for showging history of copied texts
         CMDID_CLEARCLIPBOX              = EXT_NAME + "-" + "clear.history",     // Command Id to clear the history
+        CMDID_CLIPBOXSETTINGS           = EXT_NAME + "-" + "settings",          // Command Id to show settings dialog
     
         KEY_EVENT_TYPE_DOWN             = "keydown",
         KEY_EVENT_TYPE_UP               = "keyup",
@@ -92,16 +96,22 @@ define(function (require, exports, module) {
         QuickOpen.beginSearch(quickOpenMatch);
     }
 
+    function showSettingsDialog() {
+        var settingsDlg = Dialogs.showModalDialogUsingTemplate(settingsDlgTemplate);
+    }
+
     function buildCommands() {
 
         var editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
         CommandManager.register("Show ClipBox", CMDID_SHOWCLIPBOX, beginClipBoxSearch);
         CommandManager.register("Clear ClipBox", CMDID_CLEARCLIPBOX, clearClipboard);
+        CommandManager.register("ClipBox Settings...", CMDID_CLIPBOXSETTINGS, showSettingsDialog);
 
         editMenu.addMenuDivider();
         
         editMenu.addMenuItem(CMDID_SHOWCLIPBOX, quickOpenHotKey);
         editMenu.addMenuItem(CMDID_CLEARCLIPBOX, clearClipBoxHotKey);
+        editMenu.addMenuItem(CMDID_CLIPBOXSETTINGS);
     }
 
     function searchClipBox(query, matcher) {
