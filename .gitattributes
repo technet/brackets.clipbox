@@ -1,0 +1,4 @@
+package.bat export-ignore
+screenshot.png export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
