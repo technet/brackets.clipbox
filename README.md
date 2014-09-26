@@ -44,3 +44,14 @@ There are some limitations, but considering 99% of common usage, these limitatio
 * Capture both `Cut` and `Copy` operations. 
 * Handle `Edit -> Cut` and `Edit -> Copy` menu actions.
 * Filter entries by search string.
+
+### Version History
+
+##### 0.2.0
+- Settings dialog, Now you can change number of history entries and customize shortcut key combinations. (__Note__: you need to restart brackets in order to apply new shortcut settings)
+- Seperated language specific strings to support localization. However it only supports English in this release.
+- Code cleanup
+
+##### 0.1.0
+
+Initial release with main functionality.
