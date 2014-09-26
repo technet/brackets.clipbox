@@ -9,18 +9,19 @@
                <tbody>
                    <tr>
                        <td class="col1 text-right">{{ DLG_LBL_ENTRIES }}</td>
-                       <td class="col2" ><input type="text" class="dfield form-control" id="max-entries" placeholder="{{ DLG_PLH_ENTRIES }}"></td>
+                       <td class="col2" ><input type="text" class="dfield form-control" id="max-entries" placeholder="{{ DLG_PLH_ENTRIES }}" value="{{ settings.maxClipBoxSize }}"></td>
                    </tr>
                    <tr>
                        <td class="col1 caption text-right">{{ DLG_LBL_QKOPEN }}</td>
-                       <td class="col2"><input type="text" class="dfield input form-control" id="qopen-shortcut" placeholder="{{ DLG_PLH_QKOPEN }}"></td>
+                       <td class="col2"><input type="text" class="dfield input form-control" id="qopen-shortcut" placeholder="{{ DLG_PLH_QKOPEN }}" value="{{ settings.quickOpenHotKey }}"></td>
                    </tr>
                    <tr>
                        <td class="col1 caption text-right">{{ DLG_LBL_CLEAR }}</td>
-                       <td class="col2"><input type="text" class="dfield input form-control" id="clear-shortcut" placeholder="{{ DLG_PLH_CLEAR }}"></td>
+                       <td class="col2"><input type="text" class="dfield input form-control" id="clear-shortcut" placeholder="{{ DLG_PLH_CLEAR }}" value="{{ settings.clearClipBoxHotKey }}"></td>
                    </tr>
                </tbody>
            </table>
+           <small>{{ DLG_INFO }}</small>
     </div>
     <div class="modal-footer">
         <button class="dialog-button btn" data-button-id="cancel">{{ DLG_CMD_CANCEL }}</button>

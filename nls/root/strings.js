@@ -13,6 +13,7 @@ define({
     "DLG_PLH_QKOPEN"    : "Shortcut keys to open history box (Ctrl-Alt-V)",
     "DLG_CMD_SAVE"      : "Save",
     "DLG_CMD_CANCEL"    : "Cancel",
+    "DLG_INFO"          : "You may need to restart brackets to apply new shortcut keys",
 
 
     "MNU_CLEAR_CLIPBOX" : "Clear ClipBox",

@@ -7,31 +7,33 @@
 define(function (require, exports, module) {
     "use strict";
     
-    var AppInit         = brackets.getModule("utils/AppInit"),
-        EditorManager   = brackets.getModule("editor/EditorManager"),
-        KeyEvent        = brackets.getModule("utils/KeyEvent"),
-        CommandManager  = brackets.getModule("command/CommandManager"),
-        Menus           = brackets.getModule("command/Menus"),
-        ExtensionUtils  = brackets.getModule("utils/ExtensionUtils"),
-        PanelManager    = brackets.getModule("view/PanelManager"),
-        QuickOpen       = brackets.getModule("search/QuickOpen"),
-        Dialogs         = brackets.getModule("widgets/Dialogs"),
-        StringUtils     = brackets.getModule("utils/StringUtils");
+    var AppInit             = brackets.getModule("utils/AppInit"),
+        EditorManager       = brackets.getModule("editor/EditorManager"),
+        KeyEvent            = brackets.getModule("utils/KeyEvent"),
+        CommandManager      = brackets.getModule("command/CommandManager"),
+        Menus               = brackets.getModule("command/Menus"),
+        ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
+        PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
+        QuickOpen           = brackets.getModule("search/QuickOpen"),
+        Dialogs             = brackets.getModule("widgets/Dialogs"),
+        StringUtils         = brackets.getModule("utils/StringUtils");
 
-    var ctrlDown            = false,
-        filterEnabled       = false,                        // Future feature.
+    var filterEnabled       = false,                        // Future feature.
         clipBoxData         = [],
         quickOpenHotKey     = "Ctrl-Alt-V",
         clearClipBoxHotKey  = "Ctrl-Alt-E",
         quickOpenMatch      = '#',
+        maxClipBoxSize      = 10,                           // Maximum number of history entries, if you think you need more just increase.
         lastKey             = 0;
     
     var settingsDlgTemplate = require("text!templates/settings.html");
     var ExtStrings          = require("strings");
 
     // Constants
-    var MAX_CLIPBOX_SIZE                = 10,                                   // Maximum number of history entries, if you think you need more just increase.
-        EXT_NAME                        = "technet.clipbox",
+    var EXT_NAME                        = "technet.clipbox",
+        EXT_PREF_HISTORY_SIZE           = "size",
+        EXT_PREF_OPEN_HOTKEY            = "openkey",
+        EXT_PREF_CLEAR_HOTKEY           = "clearkey",
         QUICKOPEN_LABEL                 = "ClipBox",
         CMDID_SHOWCLIPBOX               = EXT_NAME + "-" + "show.history",      // Command Id for showging history of copied texts
         CMDID_CLEARCLIPBOX              = EXT_NAME + "-" + "clear.history",     // Command Id to clear the history
@@ -42,14 +44,14 @@ define(function (require, exports, module) {
 
         MAX_QUICKOPEN_ENTRY_LEN         = 200;                                  // Maximum length of copied text to be displayed in each entry of QuickOpen list.
 
-    
+    var prefs               = PreferencesManager.getExtensionPrefs(EXT_NAME);
 
 
     function saveSelection(editor) {
         var selectedText = editor.getSelectedText(true);
         if (selectedText !== "") {
             clipBoxData.unshift(selectedText);
-            if (clipBoxData.length > MAX_CLIPBOX_SIZE) {
+            if (clipBoxData.length > maxClipBoxSize) {
                 clipBoxData.pop();
             }
         }
@@ -98,8 +100,12 @@ define(function (require, exports, module) {
     }
 
     function showSettingsDialog() {
+        // Will also add settings...
+        ExtStrings.settings = { "maxClipBoxSize" : maxClipBoxSize, "quickOpenHotKey" : quickOpenHotKey, "clearClipBoxHotKey" : clearClipBoxHotKey  };
 
         var localizedTemplate = Mustache.render(settingsDlgTemplate, ExtStrings);
+
+
         var settingsDlg = Dialogs.showModalDialogUsingTemplate(localizedTemplate);
     }
 
@@ -175,6 +181,24 @@ define(function (require, exports, module) {
         );
     }
 
+    function loadPreferences() {
+
+        var temp = prefs.get(EXT_PREF_HISTORY_SIZE);
+        if (!_.isNaN(temp) && temp > 0) {
+            maxClipBoxSize = temp;
+        }
+
+        temp = prefs.get(EXT_PREF_CLEAR_HOTKEY);
+        if (!_.isUndefined(temp) && temp.length > 0) {
+            clearClipBoxHotKey = temp;
+        }
+
+        temp = prefs.get(EXT_PREF_OPEN_HOTKEY);
+        if (!_.isUndefined(temp) && temp.length > 0) {
+            quickOpenHotKey = temp;
+        }
+    }
+
 
     AppInit.appReady(function () {
         
@@ -183,6 +207,7 @@ define(function (require, exports, module) {
 
         $(currentEditor).on('keyEvent', keyEventHandler);
         $(EditorManager).on('activeEditorChange', activeEditorChangeHandler);
+        loadPreferences();
         buildCommands();
         buildQuickOpen();
     });
