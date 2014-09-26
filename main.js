@@ -99,14 +99,60 @@ define(function (require, exports, module) {
         QuickOpen.beginSearch(quickOpenMatch);
     }
 
+    function applyAndSaveSettings(settingsDlg) {
+
+        var $body = settingsDlg.getElement();
+        var maxEntries = $body.find("#max-entries").val().trim();
+        var openHotKey = $body.find("#qopen-shortcut").val().trim();
+        var clearHotKey = $body.find("#clear-shortcut").val().trim();
+        var modified = false;
+
+        try {
+
+            var temp = parseInt(maxEntries, 10);
+            if (temp > 0 && temp !== maxClipBoxSize) {
+                maxClipBoxSize = temp;
+                clipBoxData = clipBoxData.length > maxClipBoxSize ? clipBoxData.slice(0, maxClipBoxSize) : clipBoxData;
+                prefs.set(EXT_PREF_HISTORY_SIZE, maxClipBoxSize);
+                modified = true;
+            }
+
+            if (openHotKey.length > 0 && openHotKey !== quickOpenHotKey) {
+                quickOpenHotKey = openHotKey;
+                prefs.set(EXT_PREF_OPEN_HOTKEY, quickOpenHotKey);
+                modified = true;
+            }
+
+            if (clearHotKey.length > 0 && clearHotKey !== clearClipBoxHotKey) {
+                clearClipBoxHotKey = clearHotKey;
+                prefs.set(EXT_PREF_CLEAR_HOTKEY, clearClipBoxHotKey);
+                modified = true;
+            }
+
+            if (modified) {
+                prefs.save();
+            }
+
+        } catch (ex) {
+
+            console.log(ex.message);
+        }
+
+    }
+
     function showSettingsDialog() {
         // Will also add settings...
         ExtStrings.settings = { "maxClipBoxSize" : maxClipBoxSize, "quickOpenHotKey" : quickOpenHotKey, "clearClipBoxHotKey" : clearClipBoxHotKey  };
 
         var localizedTemplate = Mustache.render(settingsDlgTemplate, ExtStrings);
-
-
         var settingsDlg = Dialogs.showModalDialogUsingTemplate(localizedTemplate);
+
+
+        settingsDlg.done(function (buttonId) {
+            if (buttonId === "ok") {
+                applyAndSaveSettings(settingsDlg);
+            }
+        });
     }
 
     function buildCommands() {
