@@ -18,6 +18,9 @@ define(function (require, exports, module) {
         Dialogs             = brackets.getModule("widgets/Dialogs"),
         StringUtils         = brackets.getModule("utils/StringUtils");
 
+    var _                   = require("vendor/lodash");
+
+
     var filterEnabled       = false,                        // Future feature.
         clipBoxData         = [],
         quickOpenHotKey     = "Ctrl-Alt-V",
