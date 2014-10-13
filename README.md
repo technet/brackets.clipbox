@@ -48,7 +48,7 @@ There are some limitations, but considering 99% of common usage, these limitatio
 ### Version History
 
 ##### 0.2.1
-- My assumption is that lodash available directly to any extension as it was mentioned in [http://brackets.io/docs/current/modules/utils/StringUtils.html#-htmlEscape](http://brackets.io/docs/current/modules/utils/StringUtils.html#-htmlEscape) to use `_.escape()` instead of `htmlEscape()`, I'm still not sure whether lodash `_` is directly available or not. However in order to fix the [issue](https://github.com/technet/brackets.clipbox/issues/1) raised by [Tamas](https://github.com/tomas-samot), (one user out of 1600+ users) I will be use own copy of lodash together with this extension.
+- My assumption is that lodash available directly to any extension as it was mentioned in [http://brackets.io/docs/current/modules/utils/StringUtils.html#-htmlEscape](http://brackets.io/docs/current/modules/utils/StringUtils.html#-htmlEscape) to use `_.escape()` instead of `htmlEscape()`, I'm still not sure whether lodash `_` is directly available or not. However in order to fix the [issue](https://github.com/technet/brackets.clipbox/issues/1) raised by [Tomas](https://github.com/tomas-samot), I will be use own copy of lodash together with this extension.
 
 ##### 0.2.0
 - Settings dialog, Now you can change number of history entries and customize shortcut key combinations. (__Note__: you need to restart brackets in order to apply new shortcut settings)
