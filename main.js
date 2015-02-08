@@ -27,7 +27,7 @@ define(function (require, exports, module) {
         clearClipBoxHotKey  = "Ctrl-Alt-E",
         quickOpenMatch      = '#',
         maxClipBoxSize      = 10,                           // Maximum number of history entries, if you think you need more just increase.
-        lastKey             = 0;
+        lastSelectedText 	= "";
     
     var settingsDlgTemplate = require("text!templates/settings.html");
     var ExtStrings          = require("strings");
@@ -48,11 +48,12 @@ define(function (require, exports, module) {
         MAX_QUICKOPEN_ENTRY_LEN         = 200;                                  // Maximum length of copied text to be displayed in each entry of QuickOpen list.
 
     var prefs               = PreferencesManager.getExtensionPrefs(EXT_NAME);
-
+	
 
     function saveSelection(editor) {
         var selectedText = editor.getSelectedText(true);
-        if (selectedText !== "") {
+        if (selectedText !== "" && selectedText != lastSelectedText) {
+			lastSelectedText = selectedText;
             clipBoxData.unshift(selectedText);
             if (clipBoxData.length > maxClipBoxSize) {
                 clipBoxData.pop();
@@ -60,27 +61,16 @@ define(function (require, exports, module) {
         }
     }
 
+	
     // We could have used KeyBindingManager for Ctrl+C however bracket source itself ignore this and let syatem to handle. So I didn't
     // want to mess with that. But the opportunity is there
     // https://github.com/adobe/brackets/blob/master/src/editor/EditorCommandHandlers.js#L1106
     var keyEventHandler = function ($event, editor, event) {
         
-        //console.log(event.type + " " + event.keyCode + " " + event.metaKey);
-        
-        if (event.keyCode === KeyEvent.DOM_VK_CONTROL) {
-            if (event.type === KEY_EVENT_TYPE_DOWN) {
-                lastKey = 1;
-            } else if (event.type === KEY_EVENT_TYPE_UP) {
-                lastKey = -1;
-            }
-        } else if (event.keyCode === KeyEvent.DOM_VK_C && lastKey !== 0 && event.type === KEY_EVENT_TYPE_UP) {
-            // I need to handle Ctrl+X as well however by the time we handle it edit already lost its data, so cannot retain it
-            // in our store. If we know how to access clipboard then this could be done because data is there in the clipboard.
-            lastKey = 0;
-            saveSelection(editor);
-        } else {
-            lastKey = 0;
-        }
+		if (event.ctrlKey && event.keyCode == KeyEvent.DOM_VK_C) {
+			saveSelection(editor);
+		}	
+		
     };
     
     function clearClipboard() {
